@@ -5,6 +5,13 @@
 var stage, loader, canvasWidth, canvasHeight;
 var background, player;
 
+// The purpose of keyMap is to hold the possible keypresses for keydown events that may happen 
+var keyMap = {
+	65: 'left',
+	68: 'right'
+};
+var xTest = 0;
+
 function init() {
 
 	stage = new createjs.Stage('forest-dungeon');
@@ -23,6 +30,11 @@ function init() {
 	loader = new createjs.LoadQueue(false);
 	loader.addEventListener('complete', handleComplete);
 	loader.loadManifest(manifest, true, 'assets/images/');
+
+	// Detect keypress: 
+
+	window.document.onkeydown = handleKeyDown;
+	window.document.onkeyup = handleKeyUp;
 }
 
 init();
@@ -44,20 +56,37 @@ function handleComplete(event) {
 	player = new Player(loader.getResult('playerSprite'), {hp: 100, atk: 10, def: 10});
 	player.createSprite({
 		framerate: 30,
-		images: [loader.getResult('playerSprite')],
-		frames: {regX: 16, height: 92, count: 24, regY: 0, width: 64},
+		images: [player.image],
+		frames: {regX: 0, height: 92, count: 24, regY: 0, width: 64},
 		animations: {
-			stand: [3],
+			stand: [4],
 			run: [3, 7, 'slash', 0.5],
 			slash: [12, 16, 'run', 0.5],
 			dead: [15, 16, 'dead', 0.2]
 		}
-	}, 'slash', {x: 20, y: 60});
+	}, 'stand', {x: 60, y: 60});
 
 	stage.addChild(player.sprite);
 
 }
 
+/* **************************** CREATE THE STAGE ***************************** */
+
+function handleKeyDown(event) {
+	if (keyMap[event.keyCode] === 'left') {
+		player.sprite.gotoAndPlay('run');
+		player.sprite.scaleX = -1;
+		player.sprite.x += 60;
+	} else if (keyMap[event.keyCode] === 'right') {
+		player.sprite.gotoAndPlay('run');
+		player.sprite.scaleX = 1;
+		player.sprite.x -= 60;
+	}
+}
+
+function handleKeyUp(event) {
+
+}
 /* ****************************** RENDER LOOP ******************************** */
 
 createjs.Ticker.addEventListener('tick', handleTick); 
