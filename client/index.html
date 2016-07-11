@@ -10,20 +10,23 @@
 	</head>
 	<body>
 
-	<script src="https://d3js.org/d3.v4.min.js"></script>
 	<script src="https://code.createjs.com/createjs-2015.11.26.min.js"></script>
 	<script src="https://code.createjs.com/easeljs-0.8.2.min.js"></script>
 	<script src="https://code.createjs.com/tweenjs-0.6.2.min.js"></script>
 	<script src="https://code.createjs.com/soundjs-0.6.2.min.js"></script>
 	<script src="https://code.createjs.com/preloadjs-0.6.2.min.js"></script>
+	<script src="../node_modules/jquery/dist/jquery.js"></script>
+    <script src="../node_modules/react/dist/react.js"></script>
+    <script src="../node_modules/react-dom/dist/react-dom.js"></script>
 
-	<div>
-		<canvas id="forest-dungeon"></canvas>
+	<div id='App'>
 	</div>
 
-	<script src="scripts/hud.js"></script>
-	<script src="scripts/mobs.js"></script>
-	<script src="scripts/player.js"></script>
-	<script src="scripts/app.js"></script>
+	<script src="compiled/client/scripts/hud.js"></script>
+	<script src="compiled/client/scripts/mobs.js"></script>
+	<script src="compiled/client/scripts/player.js"></script>
+	<script src="compiled/client/components/app.js"></script>
+	<script src="compiled/client/components/index.js"></script>
+	<script src="compiled/client/scripts/app.js"></script>
 	</body>
 </html>
