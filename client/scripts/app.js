@@ -87,7 +87,7 @@ function handleKeyDown(event) {
 }
 
 function handleKeyUp(event) {
-
+	player.handleAnimation(player.direction, 'stand');
 }
 /* ****************************** RENDER LOOP ******************************** */
 

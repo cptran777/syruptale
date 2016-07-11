@@ -24,8 +24,8 @@ class Character {
 	// Direction and animation both take strings. Animation is optional, can describe what
 	// direction the object should face and the sprite animation to utilize. 
 	handleAnimation(direction, animation) {
-		if (this.sprite.currentAnimation !== 'run') {
-			this.sprite.gotoAndPlay('run');
+		if (this.sprite.currentAnimation !== animation) {
+			this.sprite.gotoAndPlay(animation);
 		}
 		if (direction === 'left') {
 			if (this.direction === 'right') {
