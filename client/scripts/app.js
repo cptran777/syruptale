@@ -75,15 +75,15 @@ function handleComplete(event) {
 function handleKeyDown(event) {
 	player.handleAnimation(keyMap[event.keyCode], 'run');
 
-	if (keyMap[event.keyCode] === 'left') {
-		player.sprite.gotoAndPlay('run');
-		player.sprite.scaleX = -1;
-		player.sprite.x += 60;
-	} else if (keyMap[event.keyCode] === 'right') {
-		player.sprite.gotoAndPlay('run');
-		player.sprite.scaleX = 1;
-		player.sprite.x -= 60;
-	}
+	// if (keyMap[event.keyCode] === 'left') {
+	// 	player.sprite.gotoAndPlay('run');
+	// 	player.sprite.scaleX = -1;
+	// 	player.sprite.x += 60;
+	// } else if (keyMap[event.keyCode] === 'right') {
+	// 	player.sprite.gotoAndPlay('run');
+	// 	player.sprite.scaleX = 1;
+	// 	player.sprite.x -= 60;
+	// }
 }
 
 function handleKeyUp(event) {

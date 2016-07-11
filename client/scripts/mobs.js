@@ -21,10 +21,27 @@ class Character {
 		this.sprite.y = position && position.y ? position.y : 0;
 	}
 
-	// Direction and animation both take strings. Optional, can describe what
+	// Direction and animation both take strings. Animation is optional, can describe what
 	// direction the object should face and the sprite animation to utilize. 
 	handleAnimation(direction, animation) {
-		
+		if (this.sprite.currentAnimation !== 'run') {
+			this.sprite.gotoAndPlay('run');
+		}
+		if (direction === 'left') {
+			if (this.direction === 'right') {
+				this.sprite.scaleX = -1;
+				this.sprite.x += 60;
+				this.direction = 'left';
+			}
+			this.sprite.x -= 8;
+		} else if (direction === 'right') {
+			if (this.direction === 'left') {
+				this.sprite.scaleX = 1;
+				this.sprite.x -= 60;
+				this.direction = 'right';
+			}
+			this.sprite.x += 8;
+		}
 	}
 
 };
