@@ -1,0 +1,38 @@
+{
+  "name": "syruptale",
+  "version": "1.0.0",
+  "description": "2D Sidecrolling Game",
+  "main": "server.js",
+  "scripts": {
+    "test": "npm test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cptran777/syruptale.git"
+  },
+  "keywords": [
+    "syrup",
+    "tale"
+  ],
+  "author": "Charlie Tran",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/cptran777/syruptale/issues"
+  },
+  "homepage": "https://github.com/cptran777/syruptale#readme",
+  "dependencies": {
+    "bcrypt-nodejs": "0.0.3",
+    "bootstrap": "^3.3.6",
+    "express": "^4.14.0",
+    "jquery": "^3.1.0",
+    "jsx": "^0.9.89",
+    "react": "^15.2.1",
+    "react-dom": "^15.2.1",
+    "request": "^2.73.0"
+  },
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "mocha": "^2.5.3",
+    "nodemon": "^1.9.2"
+  }
+}
