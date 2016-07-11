@@ -60,11 +60,11 @@ function handleComplete(event) {
 		frames: {regX: 0, height: 92, count: 24, regY: 0, width: 64},
 		animations: {
 			stand: [4],
-			run: [3, 7, 'slash', 0.5],
-			slash: [12, 16, 'run', 0.5],
+			run: [3, 7, 'run', 0.5],
+			slash: [12, 16, 'stand', 0.5],
 			dead: [15, 16, 'dead', 0.2]
 		}
-	}, 'stand', {x: 60, y: 60});
+	}, 'slash', {x: 60, y: 60});
 
 	stage.addChild(player.sprite);
 
@@ -73,6 +73,8 @@ function handleComplete(event) {
 /* **************************** CREATE THE STAGE ***************************** */
 
 function handleKeyDown(event) {
+	player.handleAnimation(keyMap[event.keyCode], 'run');
+
 	if (keyMap[event.keyCode] === 'left') {
 		player.sprite.gotoAndPlay('run');
 		player.sprite.scaleX = -1;
