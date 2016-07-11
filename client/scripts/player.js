@@ -6,8 +6,8 @@
 // from a database query. 
 class Player extends Character {
 
-	constructor(image, stats) {
-		super(image, stats);
+	constructor(image, stats, options) {
+		super(image, stats, options);
 	}
 
 };

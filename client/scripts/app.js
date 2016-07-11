@@ -53,7 +53,7 @@ function handleComplete(event) {
 	background.y = -105;
 
 	// Creation of the player to render on the screen. 
-	player = new Player(loader.getResult('playerSprite'), {hp: 100, atk: 10, def: 10});
+	player = new Player(loader.getResult('playerSprite'), {hp: 100, atk: 10, def: 10}, {direction: 'right'});
 	player.createSprite({
 		framerate: 30,
 		images: [player.image],
