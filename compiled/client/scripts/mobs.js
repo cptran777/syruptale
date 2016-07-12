@@ -1,0 +1,23 @@
+"use strict";
+
+/* ******************** PARENT CLASS FOR ALL CHARS ********************* */
+
+var Character = function Character(image, stats) {
+
+	this.image = image;
+	this.hp = stats.hp;
+	this.atk = stats.atk;
+	this.def = stats.def;
+};
+
+// Parameters are an object set upon invoking the function while animation
+// expects a string to point which animation in the sprite sheet to use.
+// Position is an optional object to specify x and y properties.
+Character.prototype.createSprite = function (parameters, animation, position) {
+
+	var spriteSheet = new createjs.SpriteSheet(parameters);
+	this.playerSprite = new createjs.Sprite(spriteSheet, animation);
+	this.playerSprite.x = position && position.x ? position.x : 0;
+	this.playerSprite.y = position && position.y ? position.y : 0;
+};
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi4uLy4uLy4uL2NsaWVudC9zY3JpcHRzL21vYnMuanMiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6Ijs7OztBQUVBLElBQUksWUFBWSxTQUFaLFNBQVksQ0FBUyxLQUFULEVBQWdCLEtBQWhCLEVBQXVCOztBQUV0QyxNQUFLLEtBQUwsR0FBYSxLQUFiO0FBQ0EsTUFBSyxFQUFMLEdBQVUsTUFBTSxFQUFoQjtBQUNBLE1BQUssR0FBTCxHQUFXLE1BQU0sR0FBakI7QUFDQSxNQUFLLEdBQUwsR0FBVyxNQUFNLEdBQWpCO0FBRUEsQ0FQRDs7Ozs7QUFZQSxVQUFVLFNBQVYsQ0FBb0IsWUFBcEIsR0FBbUMsVUFBUyxVQUFULEVBQXFCLFNBQXJCLEVBQWdDLFFBQWhDLEVBQTBDOztBQUU1RSxLQUFJLGNBQWMsSUFBSSxTQUFTLFdBQWIsQ0FBeUIsVUFBekIsQ0FBbEI7QUFDQSxNQUFLLFlBQUwsR0FBb0IsSUFBSSxTQUFTLE1BQWIsQ0FBb0IsV0FBcEIsRUFBaUMsU0FBakMsQ0FBcEI7QUFDQSxNQUFLLFlBQUwsQ0FBa0IsQ0FBbEIsR0FBc0IsWUFBWSxTQUFTLENBQXJCLEdBQXlCLFNBQVMsQ0FBbEMsR0FBc0MsQ0FBNUQ7QUFDQSxNQUFLLFlBQUwsQ0FBa0IsQ0FBbEIsR0FBc0IsWUFBWSxTQUFTLENBQXJCLEdBQXlCLFNBQVMsQ0FBbEMsR0FBc0MsQ0FBNUQ7QUFFQSxDQVBEIiwiZmlsZSI6Im1vYnMuanMiLCJzb3VyY2VzQ29udGVudCI6WyIvKiAqKioqKioqKioqKioqKioqKioqKiBQQVJFTlQgQ0xBU1MgRk9SIEFMTCBDSEFSUyAqKioqKioqKioqKioqKioqKioqKiogKi9cblxudmFyIENoYXJhY3RlciA9IGZ1bmN0aW9uKGltYWdlLCBzdGF0cykge1xuXG5cdHRoaXMuaW1hZ2UgPSBpbWFnZTtcblx0dGhpcy5ocCA9IHN0YXRzLmhwO1xuXHR0aGlzLmF0ayA9IHN0YXRzLmF0aztcblx0dGhpcy5kZWYgPSBzdGF0cy5kZWY7XG5cbn07XG5cbi8vIFBhcmFtZXRlcnMgYXJlIGFuIG9iamVjdCBzZXQgdXBvbiBpbnZva2luZyB0aGUgZnVuY3Rpb24gd2hpbGUgYW5pbWF0aW9uXG4vLyBleHBlY3RzIGEgc3RyaW5nIHRvIHBvaW50IHdoaWNoIGFuaW1hdGlvbiBpbiB0aGUgc3ByaXRlIHNoZWV0IHRvIHVzZS4gXG4vLyBQb3NpdGlvbiBpcyBhbiBvcHRpb25hbCBvYmplY3QgdG8gc3BlY2lmeSB4IGFuZCB5IHByb3BlcnRpZXMuIFxuQ2hhcmFjdGVyLnByb3RvdHlwZS5jcmVhdGVTcHJpdGUgPSBmdW5jdGlvbihwYXJhbWV0ZXJzLCBhbmltYXRpb24sIHBvc2l0aW9uKSB7XG5cblx0dmFyIHNwcml0ZVNoZWV0ID0gbmV3IGNyZWF0ZWpzLlNwcml0ZVNoZWV0KHBhcmFtZXRlcnMpO1xuXHR0aGlzLnBsYXllclNwcml0ZSA9IG5ldyBjcmVhdGVqcy5TcHJpdGUoc3ByaXRlU2hlZXQsIGFuaW1hdGlvbik7XG5cdHRoaXMucGxheWVyU3ByaXRlLnggPSBwb3NpdGlvbiAmJiBwb3NpdGlvbi54ID8gcG9zaXRpb24ueCA6IDA7XG5cdHRoaXMucGxheWVyU3ByaXRlLnkgPSBwb3NpdGlvbiAmJiBwb3NpdGlvbi55ID8gcG9zaXRpb24ueSA6IDA7XG5cbn1cblxuXG5cblxuXG4iXX0=

@@ -1,0 +1,6 @@
+"use strict";
+
+var Player = {};
+
+module.exports = Player;
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi4uLy4uLy4uL2NsaWVudC9zY3JpcHRzL3BsYXllci5qcyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiOztBQUFBLElBQUksU0FBUyxFQUFiOztBQUlBLE9BQU8sT0FBUCxHQUFpQixNQUFqQiIsImZpbGUiOiJwbGF5ZXIuanMiLCJzb3VyY2VzQ29udGVudCI6WyJ2YXIgUGxheWVyID0ge1xuXHRcbn07XG5cbm1vZHVsZS5leHBvcnRzID0gUGxheWVyOyJdfQ==
