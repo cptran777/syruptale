@@ -5,7 +5,7 @@
 var stage, loader, canvasWidth, canvasHeight;
 var background, player;
 var enemies = [];
-var timeElapsed = 0; 
+var timeElapsed = 0;
 
 // The purpose of keyMap is to hold the possible keypresses for keydown events that may happen 
 var keyMap = {
@@ -64,9 +64,9 @@ function handleComplete(event) {
 		// {regX: 0, height: 92, count: 24, regY: 0, width: 64},
 		animations: {
 			stand: [0],
-			run: [1, 6, 'run', 0.5],
-			slash: [7, 13, 'stand', 0.5],
-			dead: [14, 16, 'dead', 0.1]
+			run: [1, 6, 'run', 0.25],
+			slash: [7, 13, 'stand', 0.25],
+			dead: [14, 16, 'dead', 0.05]
 		}
 	}, 'stand', {x: 60, y: 60});
 
@@ -81,19 +81,23 @@ function moveStage() {
 
 	if (player.sprite.x > 175) {
 		background.x--;
+		enemies.forEach(function(mob) {
+			mob.sprite.x--;
+		});
 		if (background.x < -900) {
 			background.x = 0; 
 		}
-		console.log(background.x);
 		if (player.sprite.currentAnimation === 'stand' || player.sprite.currentAnimation === 'slash') {
 			player.sprite.x--;
 		}
 	} else if (player.sprite.x < 25) {
 		background.x++;
+		enemies.forEach(function(mob) {
+			mob.sprite.x++;
+		});
 		if (background.x > 0) {
 			background.x = -900;
 		}
-		console.log(background.x);
 		if (player.sprite.currentAnimation === 'stand') {
 			player.sprite.x++;
 		}
@@ -104,7 +108,7 @@ function moveStage() {
 /* **************************** HANDLE KEYBINDS ***************************** */
 
 function handleKeyDown(event) {
-	player.handleAnimation(keyMap[event.keyCode], 'run', 8, 0);
+	player.handleAnimation(keyMap[event.keyCode], 'run', 12, 0);
 }
 
 function handleKeyUp(event) {
@@ -151,6 +155,7 @@ var randomizedSpawn = function(max, randA, randB) {
 /* ****************************** RENDER LOOP ******************************** */
 
 createjs.Ticker.addEventListener('tick', handleTick); 
+createjs.Ticker.setFPS(45);
 function handleTick(event) {
 
 	var deltaS = event.delta / 1000;
@@ -160,9 +165,9 @@ function handleTick(event) {
 	randomizedSpawn(4, 300, 269);
 	enemies.forEach(function moveMobs(mob) {
 		if (mob.sprite.x > player.sprite.x) {
-			mob.handleAnimation('left', 'hop', 1);
+			mob.handleAnimation('left', 'hop', 0.5);
 		} else {
-			mob.handleAnimation('right', 'hop', 1);
+			mob.handleAnimation('right', 'hop', 0.5);
 		}
 	});
 
