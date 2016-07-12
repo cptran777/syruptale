@@ -4,6 +4,7 @@
 
 var stage, loader, canvasWidth, canvasHeight;
 var background, player;
+var enemies = [];
 
 // The purpose of keyMap is to hold the possible keypresses for keydown events that may happen 
 var keyMap = {
@@ -24,7 +25,8 @@ function init() {
 	// the render will need to be adjusted to align the image properly. 
 	var manifest = [
 		{src: 'background.png', id: 'background'},
-		{src: 'default-sprite.png', id: 'playerSprite'}
+		{src: 'default-sprite.png', id: 'playerSprite'},
+		{src: 'SlimeAnimated.png', id: 'slime'}
 	];
 	// Loader will render the necessary items 
 	loader = new createjs.LoadQueue(false);
@@ -32,7 +34,6 @@ function init() {
 	loader.loadManifest(manifest, true, 'assets/images/');
 
 	// Detect keypress: 
-
 	window.document.onkeydown = handleKeyDown;
 	window.document.onkeyup = handleKeyUp;
 }
@@ -68,26 +69,40 @@ function handleComplete(event) {
 
 	stage.addChild(player.sprite);
 
+	enemies[0] = new Mob(loader.getResult('slime'), {hp: 20, atk: 12, def: 5}, {direction: 'left'});
+	enemies[0].createSprite({
+		framerate: 30,
+		images: [enemies[0].image],
+		frames: [[0, 0, 84, 96],
+			[84, 0, 84, 96],
+			[168, 0, 84, 96],
+			[252, 0, 84, 96],
+			[340, 0, 80, 96],
+			[424, 0, 80, 96],
+			[508, 0, 80, 96]
+		], 
+		animations: {
+			stand: [0, 0, 'hop', 0.2],
+			hop: [1, 6, 'stand', 0.2]
+		}
+	}, 'hop', {x: 250, y: 84});
+
+	enemies[0].sprite.scaleX = 0.5;
+	enemies[0].sprite.scaleY = 0.5;
+
+	stage.addChild(enemies[0].sprite);
+
+
 }
 
-/* **************************** CREATE THE STAGE ***************************** */
+/* **************************** HANDLE KEYBINDS ***************************** */
 
 function handleKeyDown(event) {
-	player.handleAnimation(keyMap[event.keyCode], 'run');
-
-	// if (keyMap[event.keyCode] === 'left') {
-	// 	player.sprite.gotoAndPlay('run');
-	// 	player.sprite.scaleX = -1;
-	// 	player.sprite.x += 60;
-	// } else if (keyMap[event.keyCode] === 'right') {
-	// 	player.sprite.gotoAndPlay('run');
-	// 	player.sprite.scaleX = 1;
-	// 	player.sprite.x -= 60;
-	// }
+	player.handleAnimation(keyMap[event.keyCode], 'run', 8);
 }
 
 function handleKeyUp(event) {
-	player.handleAnimation(player.direction, 'stand');
+	player.handleAnimation('stop', 'stand', 0);
 }
 /* ****************************** RENDER LOOP ******************************** */
 

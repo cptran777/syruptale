@@ -23,24 +23,24 @@ class Character {
 
 	// Direction and animation both take strings. Animation is optional, can describe what
 	// direction the object should face and the sprite animation to utilize. 
-	handleAnimation(direction, animation) {
-		if (this.sprite.currentAnimation !== animation) {
+	handleAnimation(direction, animation, distance) {
+		if (this.sprite.currentAnimation !== animation && direction) {
 			this.sprite.gotoAndPlay(animation);
 		}
 		if (direction === 'left') {
 			if (this.direction === 'right') {
-				this.sprite.scaleX = -1;
+				this.sprite.scaleX *= -1;
 				this.sprite.x += 60;
 				this.direction = 'left';
 			}
-			this.sprite.x -= 8;
+			this.sprite.x -= distance;
 		} else if (direction === 'right') {
 			if (this.direction === 'left') {
-				this.sprite.scaleX = 1;
+				this.sprite.scaleX *= -1;
 				this.sprite.x -= 60;
 				this.direction = 'right';
 			}
-			this.sprite.x += 8;
+			this.sprite.x += distance;
 		}
 	}
 
