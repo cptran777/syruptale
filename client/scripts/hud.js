@@ -4,8 +4,17 @@ class HUD {
 		this.image = image;
 		this.health = health;
 		this.portrait;
+
+		// The full health bar is supposed to remain static while the current health bar acts as
+		// an overlay of sorts and decreases in size when the player is hit, therefore giving
+		// the appearance that a single bar is losing health. 
 		this.fullHealthBar;
 		this.currentHealthBar;
+
+		// Damage display appears when an enemy is hit. This is an array made up of objects that
+		// have the format: {text: <text object in create js>, createAt: <integer number> }
+		// This way, the damage display can be checked with every render iteration to remove those
+		// that have remained on the screen for too long. 
 		this.damageDisplay = [];
 	} 
 
@@ -30,6 +39,19 @@ class HUD {
 		this.renderHealthBars();
 
 		callback(this.portrait, this.fullHealthBar, this.currentHealthBar);
+	}
+
+	// Damage and time are passed in from the app.js call to this function. The callback will be
+	// passed the text object and used to call the render on the object. 
+	renderDamage(damage, time, position, callback) {
+		console.log('hud render running'); 
+		var newText = {
+			text: new createjs.Text('' + damage, '45px Impact', '#ffbf00'),
+			createdAt: time
+		};
+		newText.text.x = position.x, newText.text.y = position.y;
+		this.damageDisplay.push(newText);
+		callback(newText.text);
 	}
 
 }

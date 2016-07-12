@@ -43,7 +43,7 @@ class Player extends Character {
 	handleAttack(targets, callback) {
 		if (this.sprite.currentAnimation !== 'slash') {
 			this.sprite.gotoAndPlay('slash');
-			this.collisions(targets, 'slash');
+			this.collisions(targets, 'slash', callback);
 		} 
 	}
 
@@ -101,7 +101,7 @@ class Player extends Character {
 				}
 			} else if (scenario === 'slash' && Math.abs(this.sprite.x - enemy.sprite.x) < 25) {
 				enemy.handleKnockback(this);
-				callback ? callback() : null;
+				callback ? callback(this.atk - enemy.def) : null;
 			}
 		});
 	}

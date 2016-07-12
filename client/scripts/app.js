@@ -132,7 +132,19 @@ function handleKeyUp(event) {
 
 function handleClick(event) {
 	if (player.hp > 0) {
-		player.handleAttack(enemies);
+		// Purpose of the callback here is to be passed through handleAttack to 
+		// the collision detector that will then call the callback is used to
+		// display text on the screen.
+		player.handleAttack(enemies, function(damage) {
+			console.log('callback to handle attack running');
+			hud.renderDamage(damage, timeElapsed, {
+				x: player.sprite.x + Math.floor(Math.random() * 80) - 40,
+				y: player.sprite.y + Math.floor(Math.random() * 10) - 40
+			}, function(text) {
+				console.log('final function running');
+				stage.addChild(text);
+			});
+		});
 	}
 }
 
