@@ -69,28 +69,28 @@ function handleComplete(event) {
 
 	stage.addChild(player.sprite);
 
-	enemies[0] = new Mob(loader.getResult('slime'), {hp: 20, atk: 12, def: 5}, {direction: 'left'});
-	enemies[0].createSprite({
-		framerate: 30,
-		images: [enemies[0].image],
-		frames: [[0, 0, 84, 96],
-			[84, 0, 84, 96],
-			[168, 0, 84, 96],
-			[252, 0, 84, 96],
-			[340, 0, 80, 96],
-			[424, 0, 80, 96],
-			[508, 0, 80, 96]
-		], 
-		animations: {
-			stand: [0, 0, 'hop', 0.2],
-			hop: [1, 6, 'stand', 0.2]
-		}
-	}, 'hop', {x: 250, y: 84});
+	// enemies[0] = new Mob(loader.getResult('slime'), {hp: 20, atk: 12, def: 5}, {direction: 'left'});
+	// enemies[0].createSprite({
+	// 	framerate: 30,
+	// 	images: [enemies[0].image],
+	// 	frames: [[0, 0, 84, 96],
+	// 		[84, 0, 84, 96],
+	// 		[168, 0, 84, 96],
+	// 		[252, 0, 84, 96],
+	// 		[340, 0, 80, 96],
+	// 		[424, 0, 80, 96],
+	// 		[508, 0, 80, 96]
+	// 	], 
+	// 	animations: {
+	// 		stand: [0, 0, 'hop', 0.2],
+	// 		hop: [1, 6, 'stand', 0.2]
+	// 	}
+	// }, 'hop', {x: 250, y: 84});
 
-	enemies[0].sprite.scaleX = 0.5;
-	enemies[0].sprite.scaleY = 0.5;
+	// enemies[0].sprite.scaleX = 0.5;
+	// enemies[0].sprite.scaleY = 0.5;
 
-	stage.addChild(enemies[0].sprite);
+	// stage.addChild(enemies[0].sprite);
 
 
 }
@@ -104,6 +104,42 @@ function handleKeyDown(event) {
 function handleKeyUp(event) {
 	player.handleAnimation('stop', 'stand', 0);
 }
+
+/* **************************** ENEMY SPAWNS ***************************** */
+
+// Function will run every time through the render loop and, if enemy count is
+// below a specified max, randomly generate a number to try to meet conditions
+// for an enemy spawn. randA and randB help to set the parameters for
+// how often something should happen. 
+var randomizedSpawn = function(max, randA, randB) {
+	if (enemies.length < max) {
+		if (Math.floor(Math.random() * randA) % randB === 0) {
+			var newIdx = enemies.length;
+			console.log('sending get request...');
+			$.get('http://127.0.0.1:3000', {name: 'slime'}, 
+				function(data) {
+					console.log('get request successful');
+					enemies[newIdx] = new Mob(loader.getResult('slime'),
+						{hp: data.result.hp, atk: data.result.atk, def: data.result.def},
+						{direction: 'left'}
+					);
+					enemies[newIdx].createSprite({
+						framerate: 30,
+						images: [enemies[newIdx]],
+						frames: JSON.parse(data.result.spritesheet),
+						animations: {
+							stand: [0, 0, 'hop', 0.2],
+							hop: [1, 6, 'stand', 0.2]
+						}
+					}, 'hop', {x: 250, y: 84});
+					enemies[newIdx].sprite.scaleX = 0.5;
+					enemies[newIdx].sprite.scaleY = 0.5;
+					stage.addChild(enemies[newIdx].sprite);
+				});
+		}
+	}
+};
+
 /* ****************************** RENDER LOOP ******************************** */
 
 createjs.Ticker.addEventListener('tick', handleTick); 
@@ -111,8 +147,11 @@ function handleTick(event) {
 
 	var deltaS = event.delta / 1000;
 
+	randomizedSpawn(4, 300, 269);
+
 	stage.update();
 }
+
 
 
 
