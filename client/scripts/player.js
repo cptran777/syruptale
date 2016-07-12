@@ -29,7 +29,7 @@ class Player extends Character {
 		// Dead
 			[316, 170, 48, 82, 0, 32],
 			[380, 170, 60, 82, 0, 32],
-			[380, 170, 60, 82, 0, 32],
+			[380, 170, 60, 82, 0, 32]
 		];
 		this.lastCollision = new Date().getTime();
 	}
@@ -43,18 +43,26 @@ class Player extends Character {
 
 	// scenario helps to increase the reusability of the collision detector
 	// by allowing different function calls based on what's happening
-	collisions(enemies, scenario) {
+	collisions(enemies, scenario, callback) {
 		enemies.forEach((enemy) => {
 			if (scenario !== 'slash' && Math.abs(this.sprite.x - enemy.sprite.x) < 3) {
 				if (new Date().getTime() - this.lastCollision > 500) {
-					console.log('collision detected!');
-					this.hp -= enemy.atk - this.def;
+					console.log('collision detected! HP: ', this.hp);
 					this.lastCollision = new Date().getTime();
+					this.hp -= enemy.atk - this.def;
+					if (this.hp < 1) {
+						callback();
+					}
 				}
 			} else if (scenario === 'slash' && Math.abs(this.sprite.x - enemy.sprite.x) < 25) {
 				enemy.handleKnockback(this);
 			}
 		});
+	}
+
+	handleDeath(callback) {
+		this.sprite.gotoAndPlay('dead');
+		setTimeout(callback, 1200);
 	}
 
 };

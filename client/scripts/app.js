@@ -66,7 +66,7 @@ function handleComplete(event) {
 			stand: [0],
 			run: [1, 6, 'run', 0.25],
 			slash: [7, 13, 'stand', 0.25],
-			dead: [14, 16, 'dead', 0.05]
+			dead: [14, 16, 'dead', 0.01]
 		}
 	}, 'stand', {x: 60, y: 60});
 
@@ -108,15 +108,21 @@ function moveStage() {
 /* **************************** HANDLE KEYBINDS ***************************** */
 
 function handleKeyDown(event) {
-	player.handleAnimation(keyMap[event.keyCode], 'run', 12, 0);
+	if (player.hp > 0) {
+		player.handleAnimation(keyMap[event.keyCode], 'run', 12, 0);
+	}
 }
 
 function handleKeyUp(event) {
-	player.handleAnimation('stop', 'stand', 0);
+	if (player.hp > 0) {
+		player.handleAnimation('stop', 'stand', 0);
+	}
 }
 
 function handleClick(event) {
-	player.handleAttack(enemies);
+	if (player.hp > 0) {
+		player.handleAttack(enemies);
+	}
 }
 
 /* **************************** ENEMY SPAWNS ***************************** */
@@ -174,7 +180,13 @@ function handleTick(event) {
 	moveStage();
 
 	if (timeElapsed % 5 === 0) {
-		player.collisions(enemies, null);
+		player.collisions(enemies, null, function() {
+			player.handleDeath(function () {
+				stage.removeChild(player.sprite);
+				stage.update();
+				createjs.Ticker.setPaused(true);
+			});
+		});
 	}
 
 	// Remove any defeated enemies: 
