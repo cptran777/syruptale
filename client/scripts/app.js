@@ -79,7 +79,25 @@ function handleComplete(event) {
 
 function moveStage() {
 
-	if (player.sprite.x)
+	if (player.sprite.x > 175) {
+		background.x--;
+		if (background.x < -900) {
+			background.x = 0; 
+		}
+		console.log(background.x);
+		if (player.sprite.currentAnimation === 'stand' || player.sprite.currentAnimation === 'slash') {
+			player.sprite.x--;
+		}
+	} else if (player.sprite.x < 25) {
+		background.x++;
+		if (background.x > 0) {
+			background.x = -900;
+		}
+		console.log(background.x);
+		if (player.sprite.currentAnimation === 'stand') {
+			player.sprite.x++;
+		}
+	}
 
 }
 
@@ -147,6 +165,8 @@ function handleTick(event) {
 			mob.handleAnimation('right', 'hop', 1);
 		}
 	});
+
+	moveStage();
 
 	if (timeElapsed % 5 === 0) {
 		player.collisions(enemies, null);

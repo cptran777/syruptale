@@ -63,7 +63,6 @@ class Mob extends Character {
 
 	handleKnockback(player) {
 		this.hp -= player.atk - this.def;
-		console.log(this.hp);
 		this.sprite.x += this.sprite.x > player.sprite.x ? 60 : -60;
 	}
 
