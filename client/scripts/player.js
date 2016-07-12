@@ -31,15 +31,59 @@ class Player extends Character {
 			[380, 170, 60, 82, 0, 32],
 			[380, 170, 60, 82, 0, 32]
 		];
+
+		// Helps to not overload collision detection: 
 		this.lastCollision = new Date().getTime();
+
+		// Two states to handle jumping animation. 
+		this.maxJumpY = 40;
+		this.jumpState = 'ground';
 	}
 
-	handleAttack(targets) {
+	handleAttack(targets, callback) {
 		if (this.sprite.currentAnimation !== 'slash') {
 			this.sprite.gotoAndPlay('slash');
 			this.collisions(targets, 'slash');
 		} 
 	}
+
+	// handleJump(animation) {
+	// 	if (this.sprite.y === 60 && animation === 'jump') {
+	// 		this.jumpState = 'up'
+	// 		this.sprite.setTransform(this.sprite.x, 30);
+	// 	} else if (this.sprite.y === 30 && animation === 'jump') {
+	// 		this.jumpState = 'up'
+	// 		this.sprite.setTransform(this.sprite.x, 60);
+	// 	}
+	// }
+
+	// Can take care of jumping and landing the player within the render loop
+	// handleJump function takes care of the initiation. 
+	// handleY() {
+	// 	if (this.sprite.y < 60 && this.sprite.y >= 38) {
+	// 		console.log('this.jumpstate =', this.jumpState);
+	// 		if (this.jumpState === 'up') {
+	// 			if (this.sprite.y >= 40) {
+	// 				this.sprite.y -= 2;
+	// 				if (this.sprite.currentAnimation === 'run') {
+	// 					this.sprite.x += this.sprite.direction === 'left' ? -1 : 1;
+	// 				}
+	// 				if (this.sprite.y <= 40) {
+	// 					this.jumpState = 'down';
+	// 				}
+	// 			}
+	// 		} else if (this.jumpState === 'down') {
+	// 			console.log('second if getting called');
+	// 			this.sprite.y += 2;
+	// 			if (this.sprite.currentAnimation === 'run') {
+	// 				this.sprite.x += this.sprite.direction === 'left' ? -1 : 1;
+	// 			}
+	// 			if (this.sprite.y >= 60) {
+	// 				this.jumpState = 'ground';
+	// 			}
+	// 		}
+	// 	}
+	// }
 
 	// scenario helps to increase the reusability of the collision detector
 	// by allowing different function calls based on what's happening
@@ -47,18 +91,23 @@ class Player extends Character {
 		enemies.forEach((enemy) => {
 			if (scenario !== 'slash' && Math.abs(this.sprite.x - enemy.sprite.x) < 3) {
 				if (new Date().getTime() - this.lastCollision > 500) {
+					console.log('collision detected! me: ', this.sprite.y, ' enemy: ', enemy.sprite.y);
 					this.lastCollision = new Date().getTime();
 					this.hp -= enemy.atk - this.def;
 					if (this.hp < 1) {
+						this.hp = 0;
 						callback();
 					}
 				}
 			} else if (scenario === 'slash' && Math.abs(this.sprite.x - enemy.sprite.x) < 25) {
 				enemy.handleKnockback(this);
+				callback ? callback() : null;
 			}
 		});
 	}
 
+	// Player death goes through the frames, and the expected callback defined within app will
+	// remove the player from the stage after elapsed time (to give room for the dead animation)
 	handleDeath(callback) {
 		this.sprite.gotoAndPlay('dead');
 		setTimeout(callback, 1200);

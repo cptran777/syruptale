@@ -10,7 +10,8 @@ var timeElapsed = 0;
 // The purpose of keyMap is to hold the possible keypresses for keydown events that may happen 
 var keyMap = {
 	65: 'left',
-	68: 'right'
+	68: 'right',
+	32: 'jump'
 };
 
 function init() {
@@ -73,9 +74,14 @@ function handleComplete(event) {
 
 	stage.addChild(player.sprite);
 
-	hud = new HUD(loader.getResult('portrait'), player.hp, function() {
-		stage.addChild(hud.portrait);
+	hud = new HUD(loader.getResult('portrait'), player.hp);
+	hud.renderHUD(function(portrait, fullHealth, currentHealth) {
+		stage.addChild(fullHealth);
+		stage.addChild(currentHealth);
+		stage.addChild(portrait);
 	});
+
+	stage.update();
 
 }
 
@@ -182,6 +188,8 @@ function handleTick(event) {
 		}
 	});
 
+	// player.handleY();
+
 	moveStage();
 
 	if (timeElapsed % 5 === 0) {
@@ -192,6 +200,7 @@ function handleTick(event) {
 				createjs.Ticker.setPaused(true);
 			});
 		});
+		hud.currentHealthBar.scaleX = player.hp / player.maxHP;
 	}
 
 	// Remove any defeated enemies: 

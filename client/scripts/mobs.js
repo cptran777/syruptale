@@ -4,6 +4,7 @@ class Character {
 	
 	constructor(image, stats, options) {
 		this.image = image;
+		this.maxHP = stats.hp;
 		this.hp = stats.hp;
 		this.atk = stats.atk;
 		this.def = stats.def;
