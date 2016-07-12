@@ -98,7 +98,7 @@ function handleComplete(event) {
 /* **************************** HANDLE KEYBINDS ***************************** */
 
 function handleKeyDown(event) {
-	player.handleAnimation(keyMap[event.keyCode], 'run', 8);
+	player.handleAnimation(keyMap[event.keyCode], 'run', 8, 60);
 }
 
 function handleKeyUp(event) {
@@ -116,7 +116,7 @@ var randomizedSpawn = function(max, randA, randB) {
 		if (Math.floor(Math.random() * randA) % randB === 0) {
 			var newIdx = enemies.length;
 			console.log('sending get request...');
-			$.get('http://127.0.0.1:3000', {name: 'slime'}, 
+			$.get('http://127.0.0.1:3000/mobs', {name: 'slime'}, 
 				function(data) {
 					console.log('get request successful');
 					enemies[newIdx] = new Mob(loader.getResult('slime'),
@@ -125,15 +125,16 @@ var randomizedSpawn = function(max, randA, randB) {
 					);
 					enemies[newIdx].createSprite({
 						framerate: 30,
-						images: [enemies[newIdx]],
+						images: [enemies[newIdx].image],
 						frames: JSON.parse(data.result.spritesheet),
 						animations: {
 							stand: [0, 0, 'hop', 0.2],
 							hop: [1, 6, 'stand', 0.2]
 						}
 					}, 'hop', {x: 250, y: 84});
-					enemies[newIdx].sprite.scaleX = 0.5;
-					enemies[newIdx].sprite.scaleY = 0.5;
+					console.log(enemies[newIdx].sprite);
+					// enemies[newIdx].sprite.scaleX = 0.5;
+					// enemies[newIdx].sprite.scaleY = 0.5;
 					stage.addChild(enemies[newIdx].sprite);
 				});
 		}
@@ -148,6 +149,13 @@ function handleTick(event) {
 	var deltaS = event.delta / 1000;
 
 	randomizedSpawn(4, 300, 269);
+	enemies.forEach(function moveMobs(mob) {
+		if (mob.sprite.x > player.sprite.x) {
+			mob.handleAnimation('left', 'hop', 1);
+		} else {
+			mob.handleAnimation('right', 'hop', -1);
+		}
+	});
 
 	stage.update();
 }
