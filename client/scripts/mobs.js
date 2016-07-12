@@ -7,10 +7,8 @@ class Character {
 		this.hp = stats.hp;
 		this.atk = stats.atk;
 		this.def = stats.def;
-		console.log('options check ', options);
 		this.direction = options ? options.direction ? 
 			options.direction : null : null;
-		console.log('direction check ', this.direction);
 	}
 
 	// Parameters are an object set upon invoking the function while animation
@@ -65,6 +63,7 @@ class Mob extends Character {
 
 	handleKnockback(player) {
 		this.hp -= player.atk - this.def;
+		console.log(this.hp);
 		this.sprite.x += this.sprite.x > player.sprite.x ? 60 : -60;
 	}
 

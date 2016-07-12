@@ -98,10 +98,8 @@ var randomizedSpawn = function(max, randA, randB) {
 	if (enemies.length < max) {
 		if (Math.floor(Math.random() * randA) % randB === 0) {
 			var newIdx = enemies.length;
-			console.log('sending get request...');
 			$.get('http://127.0.0.1:3000/mobs', {name: 'slime'}, 
 				function(data) {
-					console.log('get request successful');
 					enemies[newIdx] = new Mob(loader.getResult('slime'),
 						{hp: data.result.hp, atk: data.result.atk, def: data.result.def},
 						{direction: 'left'}
@@ -115,7 +113,6 @@ var randomizedSpawn = function(max, randA, randB) {
 							hop: [1, 6, 'stand', 0.2]
 						}
 					}, 'hop', {x: 250, y: 84});
-					console.log(enemies[newIdx].sprite);
 					enemies[newIdx].sprite.scaleX = 0.5;
 					enemies[newIdx].sprite.scaleY = 0.5;
 					stage.addChild(enemies[newIdx].sprite);
@@ -145,6 +142,15 @@ function handleTick(event) {
 	if (timeElapsed % 5 === 0) {
 		player.collisions(enemies, null);
 	}
+
+	// Remove any defeated enemies: 
+	enemies = enemies.filter(function healthZero(mob) {
+		if (mob.hp <= 0) {
+			stage.removeChild(mob.sprite);
+			console.log('mob death detected');
+		}
+		return mob.hp > 0;
+	});
 
 	stage.update();
 }
