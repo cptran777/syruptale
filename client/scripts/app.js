@@ -5,6 +5,7 @@
 var stage, loader, canvasWidth, canvasHeight;
 var background, player, hud;
 var enemies = [];
+var bosses = [];
 var timeElapsed = 0;
 
 // The purpose of keyMap is to hold the possible keypresses for keydown events that may happen 
@@ -69,7 +70,7 @@ function handleComplete(event) {
 			stand: [0],
 			run: [1, 6, 'run', 0.25],
 			slash: [7, 13, 'stand', 0.25],
-			dead: [14, 16, 'dead', 0.01]
+			dead: [14, 16, 'dead', 0.05]
 		}
 	}, 'stand', {x: 60, y: 60});
 
@@ -91,15 +92,17 @@ function handleComplete(event) {
 	wyvern.createSprite({
 		framerate: 30,
 		images: [wyvern.image],
-		frames: {x:0, y: -10, regX: 86, width: 170, height: 190},
+		frames: {x:0, y: -10, regX: 86, count: 24, width: 170, height: 175},
 		animations: {
-			stand: [0, 0, 'hop', 0.1],
-			fly: [0, 5, 'fly', 0.2]
+			fly: [0, 5, 'fly', 0.2],
+			knockback: [12, 12, 'fly', 0.02]
 		}
 	}, 'fly', {x: 250, y: 84});
 
 	wyvern.sprite.x = 155;
 	wyvern.sprite.y = 5;
+	wyvern.sprite.scaleX = 0.75;
+	wyvern.sprite.scaleY = 0.75;
 	stage.addChild(wyvern.sprite);
 
 	stage.update();
@@ -202,25 +205,25 @@ var randomizedSpawn = function(max, randA, randB) {
 
 var setBossSpawn = function(interval) {
 	if (timeElapsed % interval === 0) {
-		var newIdx = enemies.length;
-		$.get('http://127.0.0.1:3000/mobs', {name: 'slime'}, 
+		var newIdx = bosses.length;
+		$.get('http://127.0.0.1:3000/mobs', {name: 'wyvern'}, 
 			function(data) {
-				enemies[newIdx] = new Mob(loader.getResult('slime'),
+				bosses[newIdx] = new Mob(loader.getResult('wyvern'),
 					{hp: data.result.hp, atk: data.result.atk, def: data.result.def},
 					{direction: 'left'}
 				);
-				enemies[newIdx].createSprite({
+				bosses[newIdx].createSprite({
 					framerate: 30,
-					images: [enemies[newIdx].image],
+					images: [bosses[newIdx].image],
 					frames: JSON.parse(data.result.spritesheet),
 					animations: {
 						stand: [0, 0, 'hop', 0.2],
 						hop: [1, 6, 'stand', 0.2]
 					}
 				}, 'hop', {x: 250, y: 84});
-				enemies[newIdx].sprite.scaleX = 0.5;
-				enemies[newIdx].sprite.scaleY = 0.5;
-				stage.addChild(enemies[newIdx].sprite);
+				bosses[newIdx].sprite.scaleX = 0.5;
+				bosses[newIdx].sprite.scaleY = 0.5;
+				stage.addChild(bosses[newIdx].sprite);
 			});
 	}
 }
