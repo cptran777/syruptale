@@ -4,7 +4,8 @@
   "description": "2D Sidecrolling Game",
   "main": "server.js",
   "scripts": {
-    "test": "npm test"
+    "test": "npm test",
+    "start": "babel . --watch --out-dir client/compiled --presets=es2015,react --ignore=node_modules,compiled,server --source-maps inline"
   },
   "repository": {
     "type": "git",
@@ -26,11 +27,15 @@
     "express": "^4.14.0",
     "jquery": "^3.1.0",
     "jsx": "^0.9.89",
+    "mysql": "^2.11.1",
     "react": "^15.2.1",
     "react-dom": "^15.2.1",
     "request": "^2.73.0"
   },
   "devDependencies": {
+    "babel-cli": "^6.10.1",
+    "babel-preset-es2015": "^6.9.0",
+    "babel-preset-react": "^6.11.1",
     "chai": "^3.5.0",
     "mocha": "^2.5.3",
     "nodemon": "^1.9.2"
