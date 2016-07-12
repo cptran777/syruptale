@@ -74,6 +74,15 @@ function handleComplete(event) {
 
 }
 
+// Moves the stage if the player has gone beyond a certain boundary on either side, but
+// only while they are still moving in that direction. 
+
+function moveStage() {
+
+	if (player.sprite.x)
+
+}
+
 /* **************************** HANDLE KEYBINDS ***************************** */
 
 function handleKeyDown(event) {
@@ -151,6 +160,7 @@ function handleTick(event) {
 		}
 		return mob.hp > 0;
 	});
+
 
 	stage.update();
 }
