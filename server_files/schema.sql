@@ -34,3 +34,8 @@ INSERT into mobs (name, spritesheet, hp, attack, defense) VALUES
 	("slime", 
 	"[[0,0,84,96,0,42],[84,0,84,96,0,42],[168,0,84,96,0,42],[252,0,84,96,0,42],[340,0,80,96,0,40],[424,0,80,96,0,40],[508,0,80,96,0,40]]",
 	20, 20, 5);
+
+INSERT into mobs (name, spritesheet, hp, attack, defense) VALUES
+	("wyvern",
+	'{\"x\":0,\"y\":-10,\"regX\":86,\"width\":170,\"height\":190}',
+	120, 40, 25);

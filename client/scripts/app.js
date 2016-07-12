@@ -28,7 +28,8 @@ function init() {
 		{src: 'background.png', id: 'background'},
 		{src: 'default-sprite.png', id: 'playerSprite'},
 		{src: 'SlimeAnimated.png', id: 'slime'},
-		{src: 'chrom2.jpg', id: 'portrait'}
+		{src: 'chrom2.jpg', id: 'portrait'},
+		{src: 'wyvern.png', id: 'wyvern'}
 	];
 	// Loader will render the necessary items 
 	loader = new createjs.LoadQueue(false);
@@ -80,6 +81,26 @@ function handleComplete(event) {
 		stage.addChild(currentHealth);
 		stage.addChild(portrait);
 	});
+
+	var wyvern = new Mob(loader.getResult('wyvern'), {
+		hp: 100,
+		atk: 50,
+		def: 50
+	});
+
+	wyvern.createSprite({
+		framerate: 30,
+		images: [wyvern.image],
+		frames: {x:0, y: -10, regX: 86, width: 170, height: 190},
+		animations: {
+			stand: [0, 0, 'hop', 0.1],
+			fly: [0, 5, 'fly', 0.2]
+		}
+	}, 'fly', {x: 250, y: 84});
+
+	wyvern.sprite.x = 155;
+	wyvern.sprite.y = 5;
+	stage.addChild(wyvern.sprite);
 
 	stage.update();
 
@@ -174,10 +195,35 @@ var randomizedSpawn = function(max, randA, randB) {
 					enemies[newIdx].sprite.scaleX = 0.5;
 					enemies[newIdx].sprite.scaleY = 0.5;
 					stage.addChild(enemies[newIdx].sprite);
-				});
+			});
 		}
 	}
 };
+
+var setBossSpawn = function(interval) {
+	if (timeElapsed % interval === 0) {
+		var newIdx = enemies.length;
+		$.get('http://127.0.0.1:3000/mobs', {name: 'slime'}, 
+			function(data) {
+				enemies[newIdx] = new Mob(loader.getResult('slime'),
+					{hp: data.result.hp, atk: data.result.atk, def: data.result.def},
+					{direction: 'left'}
+				);
+				enemies[newIdx].createSprite({
+					framerate: 30,
+					images: [enemies[newIdx].image],
+					frames: JSON.parse(data.result.spritesheet),
+					animations: {
+						stand: [0, 0, 'hop', 0.2],
+						hop: [1, 6, 'stand', 0.2]
+					}
+				}, 'hop', {x: 250, y: 84});
+				enemies[newIdx].sprite.scaleX = 0.5;
+				enemies[newIdx].sprite.scaleY = 0.5;
+				stage.addChild(enemies[newIdx].sprite);
+			});
+	}
+}
 
 /* ****************************** RENDER LOOP ******************************** */
 
@@ -189,7 +235,7 @@ function handleTick(event) {
 
 	timeElapsed++;
 
-	randomizedSpawn(4, 300, 269);
+	randomizedSpawn(12, 300, 269);
 	enemies.forEach(function moveMobs(mob) {
 		if (mob.sprite.x > player.sprite.x) {
 			mob.handleAnimation('left', 'hop', 0.5);
