@@ -7,8 +7,10 @@ class Character {
 		this.hp = stats.hp;
 		this.atk = stats.atk;
 		this.def = stats.def;
+		console.log('options check ', options);
 		this.direction = options ? options.direction ? 
 			options.direction : null : null;
+		console.log('direction check ', this.direction);
 	}
 
 	// Parameters are an object set upon invoking the function while animation
@@ -24,7 +26,7 @@ class Character {
 	// Direction and animation both take strings. Animation is optional, can describe what
 	// direction the object should face and the sprite animation to utilize. 
 	handleAnimation(direction, animation, distance, adjust) {
-		if (this.sprite.currentAnimation !== animation && direction) {
+		if (this.sprite.currentAnimation === 'stand' && direction) {
 			this.sprite.gotoAndPlay(animation);
 		}
 		if (direction === 'left') {
@@ -51,7 +53,7 @@ window.Character = Character;
 class Mob extends Character {
 
 	constructor(image, stats, options) {
-		super(image, stats);
+		super(image, stats, options);
 	}
 
 }

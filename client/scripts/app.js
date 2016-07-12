@@ -36,6 +36,7 @@ function init() {
 	// Detect keypress: 
 	window.document.onkeydown = handleKeyDown;
 	window.document.onkeyup = handleKeyUp;
+	window.document.onclick = handleClick;
 }
 
 init();
@@ -58,51 +59,33 @@ function handleComplete(event) {
 	player.createSprite({
 		framerate: 30,
 		images: [player.image],
-		frames: {regX: 0, height: 92, count: 24, regY: 0, width: 64},
+		frames: player.spritesheetdata,
+		// x, y, width, height, imageIndex*, regX*, regY*
+		// {regX: 0, height: 92, count: 24, regY: 0, width: 64},
 		animations: {
-			stand: [4],
-			run: [3, 7, 'run', 0.5],
-			slash: [12, 16, 'stand', 0.5],
-			dead: [15, 16, 'dead', 0.2]
+			stand: [0],
+			run: [1, 6, 'run', 0.5],
+			slash: [7, 13, 'stand', 0.5],
+			dead: [14, 16, 'dead', 0.1]
 		}
-	}, 'slash', {x: 60, y: 60});
+	}, 'stand', {x: 60, y: 60});
 
 	stage.addChild(player.sprite);
-
-	// enemies[0] = new Mob(loader.getResult('slime'), {hp: 20, atk: 12, def: 5}, {direction: 'left'});
-	// enemies[0].createSprite({
-	// 	framerate: 30,
-	// 	images: [enemies[0].image],
-	// 	frames: [[0, 0, 84, 96],
-	// 		[84, 0, 84, 96],
-	// 		[168, 0, 84, 96],
-	// 		[252, 0, 84, 96],
-	// 		[340, 0, 80, 96],
-	// 		[424, 0, 80, 96],
-	// 		[508, 0, 80, 96]
-	// 	], 
-	// 	animations: {
-	// 		stand: [0, 0, 'hop', 0.2],
-	// 		hop: [1, 6, 'stand', 0.2]
-	// 	}
-	// }, 'hop', {x: 250, y: 84});
-
-	// enemies[0].sprite.scaleX = 0.5;
-	// enemies[0].sprite.scaleY = 0.5;
-
-	// stage.addChild(enemies[0].sprite);
-
 
 }
 
 /* **************************** HANDLE KEYBINDS ***************************** */
 
 function handleKeyDown(event) {
-	player.handleAnimation(keyMap[event.keyCode], 'run', 8, 60);
+	player.handleAnimation(keyMap[event.keyCode], 'run', 8, 0);
 }
 
 function handleKeyUp(event) {
 	player.handleAnimation('stop', 'stand', 0);
+}
+
+function handleClick(event) {
+	player.handleAttack();
 }
 
 /* **************************** ENEMY SPAWNS ***************************** */
@@ -133,8 +116,8 @@ var randomizedSpawn = function(max, randA, randB) {
 						}
 					}, 'hop', {x: 250, y: 84});
 					console.log(enemies[newIdx].sprite);
-					// enemies[newIdx].sprite.scaleX = 0.5;
-					// enemies[newIdx].sprite.scaleY = 0.5;
+					enemies[newIdx].sprite.scaleX = 0.5;
+					enemies[newIdx].sprite.scaleY = 0.5;
 					stage.addChild(enemies[newIdx].sprite);
 				});
 		}
@@ -153,7 +136,7 @@ function handleTick(event) {
 		if (mob.sprite.x > player.sprite.x) {
 			mob.handleAnimation('left', 'hop', 1);
 		} else {
-			mob.handleAnimation('right', 'hop', -1);
+			mob.handleAnimation('right', 'hop', 1);
 		}
 	});
 
