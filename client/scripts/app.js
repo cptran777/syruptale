@@ -3,7 +3,7 @@
 // Using create.js to set up and render background: 
 
 var stage, loader, canvasWidth, canvasHeight;
-var background, player;
+var background, player, hud;
 var enemies = [];
 var timeElapsed = 0;
 
@@ -26,7 +26,8 @@ function init() {
 	var manifest = [
 		{src: 'background.png', id: 'background'},
 		{src: 'default-sprite.png', id: 'playerSprite'},
-		{src: 'SlimeAnimated.png', id: 'slime'}
+		{src: 'SlimeAnimated.png', id: 'slime'},
+		{src: 'chrom2.jpg', id: 'portrait'}
 	];
 	// Loader will render the necessary items 
 	loader = new createjs.LoadQueue(false);
@@ -71,6 +72,10 @@ function handleComplete(event) {
 	}, 'stand', {x: 60, y: 60});
 
 	stage.addChild(player.sprite);
+
+	hud = new HUD(loader.getResult('portrait'), player.hp, function() {
+		stage.addChild(hud.portrait);
+	});
 
 }
 
@@ -193,7 +198,6 @@ function handleTick(event) {
 	enemies = enemies.filter(function healthZero(mob) {
 		if (mob.hp <= 0) {
 			stage.removeChild(mob.sprite);
-			console.log('mob death detected');
 		}
 		return mob.hp > 0;
 	});

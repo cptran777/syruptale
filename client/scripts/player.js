@@ -47,7 +47,6 @@ class Player extends Character {
 		enemies.forEach((enemy) => {
 			if (scenario !== 'slash' && Math.abs(this.sprite.x - enemy.sprite.x) < 3) {
 				if (new Date().getTime() - this.lastCollision > 500) {
-					console.log('collision detected! HP: ', this.hp);
 					this.lastCollision = new Date().getTime();
 					this.hp -= enemy.atk - this.def;
 					if (this.hp < 1) {
