@@ -28,6 +28,8 @@ class Character {
 	handleAnimation(direction, animation, distance, adjust) {
 		if (this.sprite.currentAnimation === 'stand' && direction) {
 			this.sprite.gotoAndPlay(animation);
+		} else if (direction === 'stop') {
+			this.sprite.gotoAndPlay('stand');
 		}
 		if (direction === 'left') {
 			if (this.direction === 'right') {
@@ -44,6 +46,11 @@ class Character {
 			}
 			this.sprite.x += distance;
 		}
+		if (this.sprite.x < -5) {
+			this.sprite.x = 0;
+		} else if (this.sprite.x > 300) {
+			this.sprite.x = 295;
+		}
 	}
 
 };
@@ -54,6 +61,11 @@ class Mob extends Character {
 
 	constructor(image, stats, options) {
 		super(image, stats, options);
+	}
+
+	handleKnockback(player) {
+		this.hp -= player.atk - this.def;
+		this.sprite.x += this.sprite.x > player.sprite.x ? 60 : -60;
 	}
 
 }

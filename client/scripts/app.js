@@ -5,13 +5,13 @@
 var stage, loader, canvasWidth, canvasHeight;
 var background, player;
 var enemies = [];
+var timeElapsed = 0; 
 
 // The purpose of keyMap is to hold the possible keypresses for keydown events that may happen 
 var keyMap = {
 	65: 'left',
 	68: 'right'
 };
-var xTest = 0;
 
 function init() {
 
@@ -85,7 +85,7 @@ function handleKeyUp(event) {
 }
 
 function handleClick(event) {
-	player.handleAttack();
+	player.handleAttack(enemies);
 }
 
 /* **************************** ENEMY SPAWNS ***************************** */
@@ -131,6 +131,8 @@ function handleTick(event) {
 
 	var deltaS = event.delta / 1000;
 
+	timeElapsed++;
+
 	randomizedSpawn(4, 300, 269);
 	enemies.forEach(function moveMobs(mob) {
 		if (mob.sprite.x > player.sprite.x) {
@@ -139,6 +141,10 @@ function handleTick(event) {
 			mob.handleAnimation('right', 'hop', 1);
 		}
 	});
+
+	if (timeElapsed % 5 === 0) {
+		player.collisions(enemies, null);
+	}
 
 	stage.update();
 }

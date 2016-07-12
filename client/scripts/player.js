@@ -31,15 +31,30 @@ class Player extends Character {
 			[380, 170, 60, 82, 0, 32],
 			[380, 170, 60, 82, 0, 32],
 		];
-		// for (var x = 30; x <= 478; x += 54) {
-		// 	this.spritesheetdata.push([x, 0, 48, 84, 0, 32]);
-		// }
+		this.lastCollision = new Date().getTime();
 	}
 
-	handleAttack() {
+	handleAttack(targets) {
 		if (this.sprite.currentAnimation !== 'slash') {
 			this.sprite.gotoAndPlay('slash');
+			this.collisions(targets, 'slash');
 		} 
+	}
+
+	// scenario helps to increase the reusability of the collision detector
+	// by allowing different function calls based on what's happening
+	collisions(enemies, scenario) {
+		enemies.forEach((enemy) => {
+			if (scenario !== 'slash' && Math.abs(this.sprite.x - enemy.sprite.x) < 3) {
+				if (new Date().getTime() - this.lastCollision > 500) {
+					console.log('collision detected!');
+					this.hp -= enemy.atk - this.def;
+					this.lastCollision = new Date().getTime();
+				}
+			} else if (scenario === 'slash' && Math.abs(this.sprite.x - enemy.sprite.x) < 25) {
+				enemy.handleKnockback(this);
+			}
+		});
 	}
 
 };
