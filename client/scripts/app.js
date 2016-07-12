@@ -136,12 +136,10 @@ function handleClick(event) {
 		// the collision detector that will then call the callback is used to
 		// display text on the screen.
 		player.handleAttack(enemies, function(damage) {
-			console.log('callback to handle attack running');
 			hud.renderDamage(damage, timeElapsed, {
-				x: player.sprite.x + Math.floor(Math.random() * 80) - 40,
-				y: player.sprite.y + Math.floor(Math.random() * 10) - 40
+				x: player.sprite.x + Math.floor(Math.random() * 50) - 25,
+				y: player.sprite.y + Math.floor(Math.random() * 10) - 25
 			}, function(text) {
-				console.log('final function running');
 				stage.addChild(text);
 			});
 		});
@@ -223,6 +221,17 @@ function handleTick(event) {
 		return mob.hp > 0;
 	});
 
+	// Go through the damage numbers and remove the ones that have stayed on screen 
+	// for too long. 
+	if (timeElapsed % 5 === 0) {
+		console.log(hud.damageDisplay);
+		hud.damageDisplay = hud.damageDisplay.filter(function removeOldNum(num) {
+			if (timeElapsed - num.createdAt > 45) {
+				stage.removeChild(num.text); 
+			}
+			return timeElapsed - num.createdAt <= 45;
+		});
+	}
 
 	stage.update();
 }

@@ -43,10 +43,9 @@ class HUD {
 
 	// Damage and time are passed in from the app.js call to this function. The callback will be
 	// passed the text object and used to call the render on the object. 
-	renderDamage(damage, time, position, callback) {
-		console.log('hud render running'); 
+	renderDamage(damage, time, position, callback) { 
 		var newText = {
-			text: new createjs.Text('' + damage, '45px Impact', '#ffbf00'),
+			text: new createjs.Text('' + damage, '25px Impact', '#ffbf00'),
 			createdAt: time
 		};
 		newText.text.x = position.x, newText.text.y = position.y;
