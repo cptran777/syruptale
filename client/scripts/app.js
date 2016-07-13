@@ -157,7 +157,7 @@ function handleClick(event) {
 		// Purpose of the callback here is to be passed through handleAttack to 
 		// the collision detector that will then call the callback is used to
 		// display text on the screen.
-		player.handleAttack(enemies, function(damage) {
+		player.handleAttack([].concat(enemies, bosses), function(damage) {
 			hud.renderDamage(damage, timeElapsed, {
 				x: player.sprite.x + Math.floor(Math.random() * 50) - 25,
 				y: player.sprite.y + Math.floor(Math.random() * 10) - 25
@@ -216,7 +216,7 @@ var setBossSpawn = function(interval, max) {
 					frames: JSON.parse(data.result.spritesheet),
 					animations: {
 						fly: [0, 5, 'fly', 0.2],
-						knockback: [12, 12, 'fly', 0.02]
+						knockback: [12, 12, 'fly', 0.1]
 					}
 				}, 'fly', {x: 250, y: 4});
 				bosses[newIdx].sprite.scaleX = 0.75;
@@ -245,13 +245,22 @@ function handleTick(event) {
 			mob.handleAnimation('right', 'hop', 0.5);
 		}
 	});
+	bosses.forEach(function moveBosses(boss) {
+		if (boss.sprite.x > player.sprite.x) {
+			boss.handleAnimation('left', 'fly', 0.5);
+		} else {
+			boss.handleAnimation('right', 'fly', 0.5);
+		}
+	})
 
 	// player.handleY();
 
 	moveStage();
 
+	// Use of time elapsed conditional in order to slow down some 
+	// processes that don't need to happen on every frame. 
 	if (timeElapsed % 5 === 0) {
-		player.collisions(enemies, null, function() {
+		player.collisions([].concat(enemies, bosses), null, function() {
 			player.handleDeath(function () {
 				stage.removeChild(player.sprite);
 				stage.update();
@@ -259,15 +268,23 @@ function handleTick(event) {
 			});
 		});
 		hud.currentHealthBar.scaleX = player.hp / player.maxHP;
+		// Remove any defeated enemies: 
+		enemies = enemies.filter(function healthZero(mob) {
+			if (mob.hp <= 0) {
+				stage.removeChild(mob.sprite);
+			}
+			return mob.hp > 0;
+		});
+		bosses = bosses.filter(function healthZero(boss) {
+			if (boss.hp <= 0) {
+				stage.removeChild(mob.sprite);
+			}
+			return mob.hp > 0;
+		});
 	}
 
-	// Remove any defeated enemies: 
-	enemies = enemies.filter(function healthZero(mob) {
-		if (mob.hp <= 0) {
-			stage.removeChild(mob.sprite);
-		}
-		return mob.hp > 0;
-	});
+
+
 
 	// Go through the damage numbers and remove the ones that have stayed on screen 
 	// for too long. 

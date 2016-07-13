@@ -89,7 +89,7 @@ class Player extends Character {
 	// by allowing different function calls based on what's happening
 	collisions(enemies, scenario, callback) {
 		enemies.forEach((enemy) => {
-			if (scenario !== 'slash' && Math.abs(this.sprite.x - enemy.sprite.x) < 3) {
+			if (scenario !== 'slash' && Math.abs(this.sprite.x - enemy.sprite.x) < 8) {
 				if (new Date().getTime() - this.lastCollision > 500) {
 					console.log('collision detected! me: ', this.sprite.y, ' enemy: ', enemy.sprite.y);
 					this.lastCollision = new Date().getTime();
@@ -100,7 +100,7 @@ class Player extends Character {
 					}
 				}
 			} else if (scenario === 'slash' && Math.abs(this.sprite.x - enemy.sprite.x) < 25) {
-				enemy.handleKnockback(this);
+				enemy.handleKnockback(this, 'knockback');
 				callback ? callback(this.atk - enemy.def) : null;
 			}
 		});

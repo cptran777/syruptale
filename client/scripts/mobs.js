@@ -62,8 +62,7 @@ class Mob extends Character {
 		super(image, stats, options);
 	}
 
-	handleKnockback(player, animation) {
-		animation ? this.sprite.gotoAndPlay(animation) : null;
+	handleKnockback(player) {
 		this.hp -= player.atk - this.def;
 		this.sprite.x += this.sprite.x > player.sprite.x ? 60 : -60;
 	}
