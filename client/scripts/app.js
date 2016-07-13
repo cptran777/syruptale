@@ -83,27 +83,25 @@ function handleComplete(event) {
 		stage.addChild(portrait);
 	});
 
-	var wyvern = new Mob(loader.getResult('wyvern'), {
-		hp: 100,
-		atk: 50,
-		def: 50
-	});
+	// var wyvern = new Mob(loader.getResult('wyvern'), {
+	// 	hp: 100,
+	// 	atk: 50,
+	// 	def: 50
+	// });
 
-	wyvern.createSprite({
-		framerate: 30,
-		images: [wyvern.image],
-		frames: {x:0, y: -10, regX: 86, count: 24, width: 170, height: 175},
-		animations: {
-			fly: [0, 5, 'fly', 0.2],
-			knockback: [12, 12, 'fly', 0.02]
-		}
-	}, 'fly', {x: 250, y: 84});
+	// wyvern.createSprite({
+	// 	framerate: 30,
+	// 	images: [wyvern.image],
+	// 	frames: {x:0, y: -10, regX: 86, count: 24, width: 170, height: 175},
+	// 	animations: {
+	// 		fly: [0, 5, 'fly', 0.2],
+	// 		knockback: [12, 12, 'fly', 0.02]
+	// 	}
+	// }, 'fly', {x: 250, y: 4});
 
-	wyvern.sprite.x = 155;
-	wyvern.sprite.y = 5;
-	wyvern.sprite.scaleX = 0.75;
-	wyvern.sprite.scaleY = 0.75;
-	stage.addChild(wyvern.sprite);
+	// wyvern.sprite.scaleX = 0.75;
+	// wyvern.sprite.scaleY = 0.75;
+	// stage.addChild(wyvern.sprite);
 
 	stage.update();
 
@@ -203,12 +201,12 @@ var randomizedSpawn = function(max, randA, randB) {
 	}
 };
 
-var setBossSpawn = function(interval) {
-	if (timeElapsed % interval === 0) {
+var setBossSpawn = function(interval, max) {
+	if (timeElapsed % interval === 0 && (max ? bosses.length < max : true)) {
 		var newIdx = bosses.length;
 		$.get('http://127.0.0.1:3000/mobs', {name: 'wyvern'}, 
 			function(data) {
-				bosses[newIdx] = new Mob(loader.getResult('wyvern'),
+				bosses[newIdx] = new Boss(loader.getResult('wyvern'),
 					{hp: data.result.hp, atk: data.result.atk, def: data.result.def},
 					{direction: 'left'}
 				);
@@ -217,12 +215,12 @@ var setBossSpawn = function(interval) {
 					images: [bosses[newIdx].image],
 					frames: JSON.parse(data.result.spritesheet),
 					animations: {
-						stand: [0, 0, 'hop', 0.2],
-						hop: [1, 6, 'stand', 0.2]
+						fly: [0, 5, 'fly', 0.2],
+						knockback: [12, 12, 'fly', 0.02]
 					}
-				}, 'hop', {x: 250, y: 84});
-				bosses[newIdx].sprite.scaleX = 0.5;
-				bosses[newIdx].sprite.scaleY = 0.5;
+				}, 'fly', {x: 250, y: 4});
+				bosses[newIdx].sprite.scaleX = 0.75;
+				bosses[newIdx].sprite.scaleY = 0.75;
 				stage.addChild(bosses[newIdx].sprite);
 			});
 	}
@@ -239,6 +237,7 @@ function handleTick(event) {
 	timeElapsed++;
 
 	randomizedSpawn(12, 300, 269);
+	setBossSpawn(200, 1);
 	enemies.forEach(function moveMobs(mob) {
 		if (mob.sprite.x > player.sprite.x) {
 			mob.handleAnimation('left', 'hop', 0.5);
@@ -273,7 +272,6 @@ function handleTick(event) {
 	// Go through the damage numbers and remove the ones that have stayed on screen 
 	// for too long. 
 	if (timeElapsed % 5 === 0) {
-		console.log(hud.damageDisplay);
 		hud.damageDisplay = hud.damageDisplay.filter(function removeOldNum(num) {
 			if (timeElapsed - num.createdAt > 45) {
 				stage.removeChild(num.text); 

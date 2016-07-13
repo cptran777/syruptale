@@ -62,7 +62,8 @@ class Mob extends Character {
 		super(image, stats, options);
 	}
 
-	handleKnockback(player) {
+	handleKnockback(player, animation) {
+		animation ? this.sprite.gotoAndPlay(animation) : null;
 		this.hp -= player.atk - this.def;
 		this.sprite.x += this.sprite.x > player.sprite.x ? 60 : -60;
 	}
@@ -70,6 +71,20 @@ class Mob extends Character {
 }
 
 window.Mob = Mob;
+
+class Boss extends Mob {
+	constructor(image, stats, options) {
+		super(image, stats, options);
+	}
+
+	handleKnockback(player, animation) {
+		animation ? this.sprite.gotoAndPlay(animation) : null;
+		this.hp -= player.atk - this.def;
+		this.sprite.x += this.sprite.x > player.sprite.x ? 30 : -30;
+	}
+}
+
+window.Boss = Boss;
 
 
 

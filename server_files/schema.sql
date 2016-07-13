@@ -37,5 +37,5 @@ INSERT into mobs (name, spritesheet, hp, attack, defense) VALUES
 
 INSERT into mobs (name, spritesheet, hp, attack, defense) VALUES
 	("wyvern",
-	'{\"x\":0,\"y\":-10,\"regX\":86,\"width\":170,\"height\":190}',
+	'{\"x\":0,\"y\":-10,\"regX\":86,\"width\":170,\"height\":175}',
 	120, 40, 25);
