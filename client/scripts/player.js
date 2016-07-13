@@ -110,7 +110,7 @@ class Player extends Character {
 
 	addExp(amount, callback) {
 		this.experience += amount;
-		if (this.experience >= Math.pow(this.level + 2, 3) + 5) {
+		if (this.experience >= Math.pow(this.level + 1, 3) + 5) {
 			this.level++;
 			this.atk += this.level;
 			this.def += 1;

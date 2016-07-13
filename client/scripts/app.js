@@ -217,7 +217,7 @@ function handleTick(event) {
 	timeElapsed++;
 
 	randomizedSpawn(12, 300, 269);
-	setBossSpawn(2500, 2);
+	setBossSpawn(2100, 2);
 	enemies.forEach(function moveMobs(mob) {
 		if (mob.sprite.x > player.sprite.x) {
 			mob.handleAnimation('left', 'hop', 0.5);
