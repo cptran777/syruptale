@@ -79,7 +79,7 @@ class Boss extends Mob {
 	handleKnockback(player, animation) {
 		animation ? this.sprite.gotoAndPlay(animation) : null;
 		this.hp -= player.atk - this.def;
-		this.sprite.x += this.sprite.x > player.sprite.x ? 30 : -30;
+		this.sprite.x += this.sprite.x > player.sprite.x ? 50 : -50;
 	}
 }
 

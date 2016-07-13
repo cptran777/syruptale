@@ -38,6 +38,8 @@ class Player extends Character {
 		// Two states to handle jumping animation. 
 		this.maxJumpY = 40;
 		this.jumpState = 'ground';
+		this.level = 1; 
+		this.experience = 0; 
 	}
 
 	handleAttack(targets, callback) {
@@ -104,6 +106,18 @@ class Player extends Character {
 				callback ? callback(this.atk - enemy.def) : null;
 			}
 		});
+	}
+
+	addExp(amount, callback) {
+		this.experience += amount;
+		if (this.experience >= Math.pow(this.level + 2, 3) + 5) {
+			this.level++;
+			this.atk += this.level;
+			this.def += 1;
+			this.maxHP += 5;
+			this.hp += 5;
+			callback();
+		}
 	}
 
 	// Player death goes through the frames, and the expected callback defined within app will

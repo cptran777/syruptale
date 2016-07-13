@@ -83,26 +83,6 @@ function handleComplete(event) {
 		stage.addChild(portrait);
 	});
 
-	// var wyvern = new Mob(loader.getResult('wyvern'), {
-	// 	hp: 100,
-	// 	atk: 50,
-	// 	def: 50
-	// });
-
-	// wyvern.createSprite({
-	// 	framerate: 30,
-	// 	images: [wyvern.image],
-	// 	frames: {x:0, y: -10, regX: 86, count: 24, width: 170, height: 175},
-	// 	animations: {
-	// 		fly: [0, 5, 'fly', 0.2],
-	// 		knockback: [12, 12, 'fly', 0.02]
-	// 	}
-	// }, 'fly', {x: 250, y: 4});
-
-	// wyvern.sprite.scaleX = 0.75;
-	// wyvern.sprite.scaleY = 0.75;
-	// stage.addChild(wyvern.sprite);
-
 	stage.update();
 
 }
@@ -237,7 +217,7 @@ function handleTick(event) {
 	timeElapsed++;
 
 	randomizedSpawn(12, 300, 269);
-	setBossSpawn(200, 1);
+	setBossSpawn(2500, 2);
 	enemies.forEach(function moveMobs(mob) {
 		if (mob.sprite.x > player.sprite.x) {
 			mob.handleAnimation('left', 'hop', 0.5);
@@ -272,12 +252,28 @@ function handleTick(event) {
 		enemies = enemies.filter(function healthZero(mob) {
 			if (mob.hp <= 0) {
 				stage.removeChild(mob.sprite);
+				player.addExp(5, function() {
+					hud.renderDamage('LEVEL UP!!!', timeElapsed, {
+						x: player.sprite.x + Math.floor(Math.random() * 50) - 25,
+						y: player.sprite.y + Math.floor(Math.random() * 10) - 25
+					}, function(text) {
+						stage.addChild(text);
+					});
+				});
 			}
 			return mob.hp > 0;
 		});
 		bosses = bosses.filter(function healthZero(boss) {
 			if (boss.hp <= 0) {
 				stage.removeChild(mob.sprite);
+				player.addExp(50, function() {
+					hud.renderDamage('LEVEL UP!!!', timeElapsed, {
+						x: player.sprite.x + Math.floor(Math.random() * 50) - 25,
+						y: player.sprite.y + Math.floor(Math.random() * 10) - 25
+					}, function(text) {
+						stage.addChild(text);
+					});
+				});
 			}
 			return mob.hp > 0;
 		});
@@ -288,7 +284,7 @@ function handleTick(event) {
 
 	// Go through the damage numbers and remove the ones that have stayed on screen 
 	// for too long. 
-	if (timeElapsed % 5 === 0) {
+	if (timeElapsed % 15 === 0) {
 		hud.damageDisplay = hud.damageDisplay.filter(function removeOldNum(num) {
 			if (timeElapsed - num.createdAt > 45) {
 				stage.removeChild(num.text); 
